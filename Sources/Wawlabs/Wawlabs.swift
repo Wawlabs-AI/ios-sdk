@@ -1,12 +1,6 @@
 import Foundation
 import UIKit
 
-struct Analytic {
-    var uid: String
-    var device_os: String
-    
-}
-
 public struct Wawlabs {
     
     var ID : String
