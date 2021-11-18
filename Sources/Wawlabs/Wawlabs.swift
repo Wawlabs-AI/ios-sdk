@@ -11,7 +11,7 @@ public struct Wawlabs {
     var didYouMean = ".wawlabs.com/avx_dym?q="
     
     
-    init(id: String, specialDomain: String) { // Constructor
+    public init(id: String, specialDomain: String) { // Constructor
         self.prefix = specialDomain
         self.ID = id
     }
