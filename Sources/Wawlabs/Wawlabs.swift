@@ -17,23 +17,23 @@ public struct Wawlabs {
     var didYouMean = ".wawlabs.com/avx_dym?q="
     
     
-    public init(id: String, specialDomain: String, search: String) { // Constructor
+    public init(id: String, specialDomain: String, queries: String) { // Constructor
         self.prefix = specialDomain
         self.ID = id
-        self.search = search
+        self.search = self.search + queries
     }
     
     
    public func recommendation(query: String) -> String {
        
-        let url = URL(string: self.schema + self.prefix + self.recom )
+        let url = URL(string: self.schema + self.prefix + self.recom + query )
         guard let requestUrl = url else { fatalError() }
        return self.fetchApi(url: requestUrl)
     }
     
     public func didYouMean(query: String) -> String{
         
-         let url = URL(string: self.schema + self.prefix + self.didYouMean )
+         let url = URL(string: self.schema + self.prefix + self.didYouMean + query )
          guard let requestUrl = url else { fatalError() }
         return self.fetchApi(url: requestUrl)
     }
@@ -41,7 +41,7 @@ public struct Wawlabs {
    public func search(query: String) -> String {
        
        
-        let url = URL(string: self.schema + self.prefix + self.search )
+        let url = URL(string: self.schema + self.prefix + self.search + query )
         guard let requestUrl = url else { fatalError() }
        self.sendAnalytic()
        return self.fetchApi(url: requestUrl)
@@ -68,8 +68,6 @@ public struct Wawlabs {
         let body = ["uid":self.ID,"ga":deviceId,"device_os":"ios"]
        let data  = try? JSONSerialization.data(withJSONObject: body)
               
-        print("anlytic data \(data)")
-        return
         request.httpBody = data
         
         // Send HTTP Request
