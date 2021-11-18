@@ -1,5 +1,5 @@
 import Foundation
-
+import UIKit
 
 struct Analytic {
     var uid: String
@@ -43,23 +43,34 @@ public struct Wawlabs {
        
         let url = URL(string: self.schema + self.prefix + self.search )
         guard let requestUrl = url else { fatalError() }
+       self.sendAnalytic()
        return self.fetchApi(url: requestUrl)
         // Create URL Request
      
     }
   
-   public func sendAnalytic(reqBody: Data ) {
+    func sendAnalytic() {
         
         let url = URL(string: "https://wa.wawlabs.com")
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
-
+       
         // Specify HTTP Method to use
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+     
+       var deviceId: String = ""
+       if let uuid = UIDevice.current.identifierForVendor?.uuidString {
+           deviceId = uuid
+       }
         
-        request.httpBody = reqBody
+        let body = ["uid":self.ID,"ga":deviceId,"device_os":"ios"]
+       let data  = try? JSONSerialization.data(withJSONObject: body)
+              
+        print("anlytic data \(data)")
+        return
+        request.httpBody = data
         
         // Send HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
