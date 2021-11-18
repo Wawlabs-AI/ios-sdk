@@ -117,11 +117,12 @@ public struct Wawlabs {
             // Convert HTTP Response Data to a simple String
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
                 body = dataString
-                return
+                print("datas \(body)")
             }
             
         }
         task.resume()
+       print("end body \(body)")
         return body
     }
 }
