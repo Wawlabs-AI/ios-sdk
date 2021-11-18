@@ -1,6 +1,12 @@
 import Foundation
 
 
+struct Analytic {
+    var uid: String
+    var device_os: String
+    
+}
+
 public struct Wawlabs {
     
     var ID : String
@@ -11,9 +17,10 @@ public struct Wawlabs {
     var didYouMean = ".wawlabs.com/avx_dym?q="
     
     
-    public init(id: String, specialDomain: String) { // Constructor
+    public init(id: String, specialDomain: String, search: String) { // Constructor
         self.prefix = specialDomain
         self.ID = id
+        self.search = search
     }
     
     
@@ -40,6 +47,43 @@ public struct Wawlabs {
         // Create URL Request
      
     }
+  
+   public func sendAnalytic(reqBody: Data ) {
+        
+        let url = URL(string: "https://wa.wawlabs.com")
+        guard let requestUrl = url else { fatalError() }
+        var request = URLRequest(url: requestUrl)
+
+        // Specify HTTP Method to use
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        request.httpBody = reqBody
+        
+        // Send HTTP Request
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            // Check if Error took place
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+            
+            // Read HTTP Response Status code
+            if let response = response as? HTTPURLResponse {
+                print("Response HTTP Status code: \(response.statusCode)")
+            }
+            
+            // Convert HTTP Response Data to a simple String
+            if let data = data, let dataString = String(data: data, encoding: .utf8) {
+               print("has been sent! \(dataString)")
+            }
+            
+        }
+        task.resume()
+    }
+    
     func fetchApi (url: URL) -> String{
         var body: String = ""
          var request = URLRequest(url: url)
@@ -65,6 +109,8 @@ public struct Wawlabs {
              if let data = data, let dataString = String(data: data, encoding: .utf8) {
                  body = dataString
                  semaphore.signal()
+                 
+                 
              }
              
          }
