@@ -99,7 +99,7 @@ public struct Wawlabs {
 
         // Specify HTTP Method to use
         request.httpMethod = "GET"
-
+       let semaphore = DispatchSemaphore(value: 0)
         // Send HTTP Request
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
@@ -117,12 +117,14 @@ public struct Wawlabs {
             // Convert HTTP Response Data to a simple String
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
                 body = dataString
-                print("datas \(body)")
+                semaphore.signal()
             }
             
         }
         task.resume()
+       semaphore.wait()
        print("end body \(body)")
+   
         return body
     }
 }
