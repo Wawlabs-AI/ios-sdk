@@ -18,113 +18,60 @@ public struct Wawlabs {
     
     
    public func recommendation(query: String) -> String {
-        var body: String = ""
-
+       
         let url = URL(string: self.schema + self.prefix + self.recom )
         guard let requestUrl = url else { fatalError() }
-
-        // Create URL Request
-        var request = URLRequest(url: requestUrl)
-
-        // Specify HTTP Method to use
-        request.httpMethod = "GET"
-
-        // Send HTTP Request
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            // Check if Error took place
-            if let error = error {
-                print("Error took place \(error)")
-                return
-            }
-            
-            // Read HTTP Response Status code
-            if let response = response as? HTTPURLResponse {
-                print("Response HTTP Status code: \(response.statusCode)")
-            }
-            
-            // Convert HTTP Response Data to a simple String
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                body = dataString
-            }
-            
-        }
-        task.resume()
-        return body
+       return self.fetchApi(url: requestUrl)
     }
     
     public func didYouMean(query: String) -> String{
-        var body: String = ""
-        let url = URL(string: self.schema + self.prefix + self.didYouMean )
-        guard let requestUrl = url else { fatalError() }
-
-        // Create URL Request
-        var request = URLRequest(url: requestUrl)
-
-        // Specify HTTP Method to use
-        request.httpMethod = "GET"
-
-        // Send HTTP Request
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            // Check if Error took place
-            if let error = error {
-                print("Error took place \(error)")
-                return
-            }
-            
-            // Read HTTP Response Status code
-            if let response = response as? HTTPURLResponse {
-                print("Response HTTP Status code: \(response.statusCode)")
-            }
-            
-            // Convert HTTP Response Data to a simple String
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                body = dataString
-            }
-            
-        }
-        task.resume()
-        return body
+        
+         let url = URL(string: self.schema + self.prefix + self.didYouMean )
+         guard let requestUrl = url else { fatalError() }
+        return self.fetchApi(url: requestUrl)
     }
     
    public func search(query: String) -> String {
-        var body: String = ""
-
+       
+       
         let url = URL(string: self.schema + self.prefix + self.search )
         guard let requestUrl = url else { fatalError() }
-
+       return self.fetchApi(url: requestUrl)
         // Create URL Request
-        var request = URLRequest(url: requestUrl)
+     
+    }
+    func fetchApi (url: URL) -> String{
+        var body: String = ""
+         var request = URLRequest(url: url)
 
-        // Specify HTTP Method to use
-        request.httpMethod = "GET"
-       let semaphore = DispatchSemaphore(value: 0)
-        // Send HTTP Request
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            // Check if Error took place
-            if let error = error {
-                print("Error took place \(error)")
-                return
-            }
-            
-            // Read HTTP Response Status code
-            if let response = response as? HTTPURLResponse {
-                print("Response HTTP Status code: \(response.statusCode)")
-            }
-            
-            // Convert HTTP Response Data to a simple String
-            if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                body = dataString
-                semaphore.signal()
-            }
-            
-        }
-        task.resume()
-       semaphore.wait()
-       print("end body \(body)")
-   
-        return body
+         // Specify HTTP Method to use
+         request.httpMethod = "GET"
+        let semaphore = DispatchSemaphore(value: 0)
+         // Send HTTP Request
+         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+             
+             // Check if Error took place
+             if let error = error {
+                 print("Error took place \(error)")
+                 return
+             }
+             
+             // Read HTTP Response Status code
+             if let response = response as? HTTPURLResponse {
+                 print("Response HTTP Status code: \(response.statusCode)")
+             }
+             
+             // Convert HTTP Response Data to a simple String
+             if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                 body = dataString
+                 semaphore.signal()
+             }
+             
+         }
+         task.resume()
+        semaphore.wait()
+        print("end body \(body)")
+    
+         return body
     }
 }
