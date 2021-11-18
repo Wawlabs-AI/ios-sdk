@@ -70,7 +70,6 @@ public struct Wawlabs {
          }
          task.resume()
         semaphore.wait()
-        print("end body \(body)")
     
          return body
     }
