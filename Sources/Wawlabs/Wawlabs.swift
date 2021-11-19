@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class Wawlabs {
+public struct Wawlabs {
     
     var ID : String
     var prefix: String
@@ -13,12 +13,12 @@ class Wawlabs {
     var queries : String?
     
     
-   init(id: String, specialDomain: String) { // Constructor
+    public init(id: String, specialDomain: String) { // Constructor
         self.prefix = specialDomain
         self.ID = id
     }
     
-   init(id: String, specialDomain: String, queries : String) {
+    public init(id: String, specialDomain: String, queries : String?) {
         self.prefix = specialDomain
         self.ID = id
         self.queries = queries
