@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-public struct Wawlabs {
+class Wawlabs {
     
     var ID : String
     var prefix: String
@@ -13,12 +13,17 @@ public struct Wawlabs {
     var queries : String?
     
     
-    public init(id: String, specialDomain: String, queries : String?) { // Constructor
+   init(id: String, specialDomain: String) { // Constructor
+        self.prefix = specialDomain
+        self.ID = id
+    }
+    
+   init(id: String, specialDomain: String, queries : String) {
         self.prefix = specialDomain
         self.ID = id
         self.queries = queries
+
     }
-    
     
    public func recommendation(query: String) -> String {
         let url = URL(string: self.schema + self.prefix + self.recom + query )
