@@ -5,12 +5,11 @@ public struct Wawlabs {
     
     var ID : String
     var prefix: String
-    var defaultQuery = "?cm=conv&f=True&d=True&q="
     var schema = "https://"
     var search = ".wawlabs.com/avx_wse"
     var recom = ".wawlabs.com/avx_eac?q="
     var didYouMean = ".wawlabs.com/avx_dym?q="
-    var queries : String?
+    var queries : String? = "?cm=conv&f=True&d=True&q="
     
     
     public init(id: String, specialDomain: String) { // Constructor
@@ -40,12 +39,7 @@ public struct Wawlabs {
    public func search(query: String) -> String {
        
         var uri = self.schema + self.prefix + self.search
-       
-       guard let queries = self.queries else{
-           return self.defaultQuery
-       }
-       
-        uri = uri + queries
+       uri = uri + self.queries!
         let url = URL(string: uri )
         guard let requestUrl = url else { fatalError() }
        self.sendAnalytic()
