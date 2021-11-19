@@ -5,28 +5,28 @@ public struct Wawlabs {
     
     var ID : String
     var prefix: String
+    var defaultQuery = "?cm=conv&f=True&d=True&q="
     var schema = "https://"
-    var search = ".wawlabs.com/avx_wse?cm=conv&f=True&d=True&q="
+    var search = ".wawlabs.com/avx_wse"
     var recom = ".wawlabs.com/avx_eac?q="
     var didYouMean = ".wawlabs.com/avx_dym?q="
+    var queries : String?
     
     
-    public init(id: String, specialDomain: String, queries: String) { // Constructor
+    public init(id: String, specialDomain: String, queries : String?) { // Constructor
         self.prefix = specialDomain
         self.ID = id
-        self.search = self.search + queries
+        self.queries = queries
     }
     
     
    public func recommendation(query: String) -> String {
-       
         let url = URL(string: self.schema + self.prefix + self.recom + query )
         guard let requestUrl = url else { fatalError() }
        return self.fetchApi(url: requestUrl)
     }
     
     public func didYouMean(query: String) -> String{
-        
          let url = URL(string: self.schema + self.prefix + self.didYouMean + query )
          guard let requestUrl = url else { fatalError() }
         return self.fetchApi(url: requestUrl)
@@ -34,8 +34,14 @@ public struct Wawlabs {
     
    public func search(query: String) -> String {
        
+        var uri = self.schema + self.prefix + self.search
        
-        let url = URL(string: self.schema + self.prefix + self.search + query )
+       guard let queries = self.queries else{
+           return self.defaultQuery
+       }
+       
+        uri = uri + queries
+        let url = URL(string: uri )
         guard let requestUrl = url else { fatalError() }
        self.sendAnalytic()
        return self.fetchApi(url: requestUrl)
